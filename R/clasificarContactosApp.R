@@ -9,17 +9,32 @@
 #'
 #' @author Ander
 clasificarContactosApp <- function(path){
-  path <- "~/BOOTCAMPS/18112019/clasificarContactos/"
+  
+  tryCatch(expr = {
+    
+    
+    #path <- "~/BOOTCAMPS/18112019/clasificarContactos/"
+    
+    library(logging)
+    
+    #Generar el manejado de log
+    addHandler(writeToFile, logger = 'log', file = paste0(path, "/log/logfile.log"))
+    loginfo("Empezamos la app...", logger = 'log')
+    
+    config <- leerConfig(path)
+    
+    
+    
+    
+  }, error = function(e){
+    
+    logerror("La aplicacion ha petado...", logger = 'log')
+    stop()
+  },finally = {
+    
+    loginfo("Fin de la ejecucion.", logger = 'log')
+    removeHandler(writeToFile, logger = 'log')
+  })
 
-  library(logging)
-  
-  #Generar el manejado de log
-  addHandler(writeToFile, logger = 'log', file = paste0(path, "/log/logfile.log"))
-  loginfo("Empezamos la app...", logger = 'log')
-  
-  config <- leerConfig(path)
-  
-  
-  
   
 }
