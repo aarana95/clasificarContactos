@@ -35,6 +35,17 @@ leerConfig <- function(path){
   
   config$columnas$predictorasNumericas <- trimws(strsplit(config$columnas$predictorasNumericas, ",")[[1]])
 
+  config$columnas$mails$ratios <-  as.logical(config$columnas$mails$ratios)
+  
+  
+  separadoresAceptados <- config$input$sep %in% c(",", ";")
+  
+  if(!separadoresAceptados){
+    
+    logerror("Sep solo puede valer ',' o ';' ", logger = 'log')
+    stop()
+    
+  }
   
   return(config)
   
@@ -52,9 +63,9 @@ validateConfigNodes <- function(config){
   
   nodoPrincipal <- identical(names(config), c("input", "columnas"))
   nodoInput <- identical(names(config$input), c("name", "sep"))
-  nodoColumnas <- identical(names(config$columnas), c("predictorasNumericas",
+  nodoColumnas <- identical(names(config$columnas), c("ID", "predictorasNumericas",
                                                      "fuenteOriginal", "dominio_mail",
-                                                     "fechas", "target", "llamada"))
+                                                     "fechas", "mails", "target", "llamada"))
   
   nodoFechas <- identical(names(config$columnas$fechas), c("creacion", "ultima_mod",
                                                            "apertura_ultimo", "envio_ultimo",
@@ -62,8 +73,11 @@ validateConfigNodes <- function(config){
                                                            "visita_primero", "visita_ultimo",
                                                            "tiempos"))
   
+  nodoMails <- identical(names(config$columnas$mails), c("mailsDl", "mailsCl", "mailsOp", "ratios"))
+  
   nodos <- c("nodoPrincipal" = nodoPrincipal, "nodoInput" = nodoInput, 
-             "nodoColumnas" = nodoColumnas, "nodoFechas" = nodoFechas)
+             "nodoColumnas" = nodoColumnas, "nodoFechas" = nodoFechas,
+             "nodoMails" = nodoMails)
   
   check <- all(nodos)
   
