@@ -3,8 +3,6 @@
 #' @param datos 
 #' @param config 
 #'
-#' @import foreach
-#' @import iterators
 #' @import xgboost
 #' @import logging
 #'
@@ -43,23 +41,36 @@ generarModelo <- function(datosSplit, config){
            num_boost_round=300,
            nrounds = 200)
   
+  set.seed(123)
   #Entrenamos el modelo
   xgModel <- xgb.train(p, dtrain, p$nrounds,
-                       list(val = dtest), print_every_n = 10, 
+                       list(val = dtest), print_every_n = 1, 
                        early_stopping_rounds = 50)
   
   
   #Predecimos el modelo para los datos que necesitamos predecir
   dPredict = xgb.DMatrix(data=data.matrix(contactosPredict[, variablesToModel]))
-  prediccion <- predict(xgModel, dPredict)
+  scores <- predict(xgModel, dPredict)
   
-  return(prediccion)
+  output <- data.frame(id = contactosPredict[, config$columnas$ID], 
+                       prediccion = scores)
+  
+  return(list(prediccion = output, modelo = xgModel))
   
 }
 
 
 
 
+#' Title
+#'
+#' @param datosSplit 
+#' @param config 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 seleccionColumnas <- function(datosSplit, config) {
   #Seleccionamos las columnas que vamos a necesitar para la prediccion
   

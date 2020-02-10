@@ -32,10 +32,15 @@ clasificarContactosApp <- function(path){
     splitDatos <- preProcesarDatos(datos, config)
     loginfo("Datos procesados.", logger = 'log')
     
+    
     loginfo("Generando modelo...", logger = 'log')
-    datos <- generarModelo(splitDatos, config)
+    output <- generarModelo(splitDatos, config)
     loginfo("Modelo Generado.", logger = 'log')
     
+    
+    loginfo("Generando output...", logger = 'log')
+    generarOutput(output, config, path)
+    loginfo("Output generado.", logger = 'log')
     
   }, error = function(e){
     

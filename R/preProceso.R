@@ -12,13 +12,13 @@
 preProcesarDatos <- function(datos, config){
   
   columnasUtilizadas <- c(config$columnas$ID, config$columnas$predictorasNumericas,
-                          config$columnas$fuenteOriginal, config$columnas$dominio_mail, config$columnas$fechas$creacion,
-                          config$columnas$fechas$ultima_mod, config$columnas$fechas$apertura_ultimo,
-                          config$columnas$fechas$envio_ultimo, config$columnas$fechas$apertura_primero,
-                          config$columnas$fechas$envio_primero, config$columnas$fechas$visita_primero,
-                          config$columnas$fechas$visita_ultimo, config$columnas$mails$mailsDl,
-                          config$columnas$mails$mailsCl, config$columnas$mails$mailsOp,
-                          config$columnas$target, config$columnas$llamada)
+                          config$columnas$fuenteOriginal, config$columnas$dominio_mail,
+                          config$columnas$fechas$creacion, config$columnas$fechas$ultima_mod,
+                          config$columnas$fechas$apertura_ultimo, config$columnas$fechas$envio_ultimo,
+                          config$columnas$fechas$apertura_primero, config$columnas$fechas$envio_primero,
+                          config$columnas$fechas$visita_primero, config$columnas$fechas$visita_ultimo,
+                          config$columnas$mails$mailsDl, config$columnas$mails$mailsCl,
+                          config$columnas$mails$mailsOp, config$columnas$target, config$columnas$llamada)
   
   
   checkColumnas <- columnasUtilizadas %in% colnames(datos)
@@ -80,6 +80,16 @@ createRatios <- function(datos, config){
 }
 
 
+#' @title generarColumnas
+#'
+#' @param datos 
+#' @param config 
+#'
+#' @return
+#' 
+#' @import dummies
+#'
+#' @examples
 generarColumnas <- function(datos, config){
   
   datos$diffCr_Ul <- abs(difftime(as.POSIXct(datos[, config$columnas$fechas$creacion]),
@@ -129,6 +139,15 @@ generarColumnas <- function(datos, config){
 }
 
 
+#' Title
+#'
+#' @param datos 
+#' @param config 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 splitearDatos <- function(datos, config){
   
   positivos <- c("Cerrado Objetivo Alcanzado", "Entrevista programada",
